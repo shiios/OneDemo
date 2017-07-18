@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sandwind.onedemo">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".FirstActivity">
+
+            <!-- //intent-filer 表示的是主活动 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SecondActivity">
+
+            <!--
+        //昨日未能使用隐式跳转页面成功原因:intent-filter少写了一个 "t" 字母
+        //使用intent的隐式构造函数，将action的字符串传进去，表示我们要启动<action />标签中的活动
+            -->
+            <intent-filter>
+                <action android:name="com.example.sandwind.onedemo.JUMP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.example.sandwind.onedemo.MY_CATEGORY" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ThirdActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
