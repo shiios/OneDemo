@@ -23,6 +23,9 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 String data = intent.getStringExtra("extra_data");
                 Toast.makeText(SecondActivity.this,data,Toast.LENGTH_SHORT).show();
+
+
+                
                 Log.d("SecondActivity",data);
                // Intent intent = new Intent(SecondActivity.this,FirstActivity.class);
             }
