@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FirstActivity">
+        <activity
+            android:name=".FirstActivity"
+            android:label="This is a firstActivity"
+            android:launchMode="singleTop">
 
             <!-- //intent-filer 表示的是主活动 -->
             <intent-filter>
@@ -18,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity">
+        <activity
+            android:name=".SecondActivity"
+            android:launchMode="singleInstance">
 
             <!--
         //昨日未能使用隐式跳转页面成功原因:intent-filter少写了一个 "t" 字母
@@ -40,7 +45,15 @@
                 <data android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".FourActivity"></activity>
+        <activity android:name=".FourActivity">
+            <intent-filter>
+                <action android:name="com.example.ACTION_START" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.example.MY_CATEGORY" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FiveActivity"></activity>
     </application>
 
 </manifest>

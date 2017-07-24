@@ -1,5 +1,6 @@
 package com.example.sandwind.onedemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class ThirdActivity extends AppCompatActivity {
+public class ThirdActivity extends BaseActivity {
+
+
+    public static void actionStart(Context context, String data1, String data2){
+        Intent intent = new Intent(context,SecondActivity.class);
+        intent.putExtra("param1",data1);
+        intent.putExtra("param2",data2);
+        context.startActivity(intent);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
