@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.preference.DialogPreference;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,53 +14,123 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity implements View.OnClickListener {
+public class FirstActivity extends BaseActivity {
 
-    private EditText editText;
-    private ImageView imageView;
+    //    private EditText editText;
+//    private ImageView imageView;
     public static final String TAG = "FirstActivity";
+    private List<Fruit> fruitList = new ArrayList<>();
+//
+//    /*
+//        //重写onCreateOptionsMenu方法
+//    */
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+///*
+//        //获取menuinflater对象,创建菜单
+//*/
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//
+//    /*
+//        //重写onOptionsItemSelected方法
+//    */
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.add_item:
+//                Toast.makeText(this, "add_item", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("http://www.baidu.com"));
+//                startActivity(intent);
+//                break;
+//            case R.id.remove_item:
+//                Toast.makeText(this, "remove_item", Toast.LENGTH_SHORT).show();
+//                Intent intent2 = new Intent(FirstActivity.this,FiveActivity.class);
+//                startActivity(intent2);
+//                //finish();
+//                break;
+//            default:
+//        }
+//        return true;
+//    }
 
-    /*
-        //重写onCreateOptionsMenu方法
-    */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    private String[] data = {
+            "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange"
+    };
 
-/*
-        //获取menuinflater对象,创建菜单
-*/
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    private void initFruits() {
 
-    /*
-        //重写onOptionsItemSelected方法
-    */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_item:
-                Toast.makeText(this, "add_item", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.baidu.com"));
-                startActivity(intent);
-                break;
-            case R.id.remove_item:
-                Toast.makeText(this, "remove_item", Toast.LENGTH_SHORT).show();
-                Intent intent2 = new Intent(FirstActivity.this,FiveActivity.class);
-                startActivity(intent2);
-                //finish();
-                break;
-            default:
+        for (int i = 0; i < 2; i++) {
+            Fruit apple = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit banana = new Fruit("banana", R.drawable.image_back);
+            fruitList.add(banana);
+            Fruit peach = new Fruit("peach", R.drawable.image_back);
+            fruitList.add(peach);
+            Fruit apple1 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple2 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple3 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple4 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple5 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple6 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple7 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple8 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple9 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple0 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple11 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple22 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple33 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple44 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple55 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple66 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple77 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple88 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple99 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple00 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple112 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple113 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+            Fruit apple114 = new Fruit("apple", R.drawable.image_back);
+            fruitList.add(apple);
+
         }
-        return true;
     }
 
 
@@ -70,6 +141,35 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
+
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar !=null){
+//            actionBar.hide();
+//        }
+
+        initFruits();
+        FruitAdapter fruitAdapter = new FruitAdapter(FirstActivity.this, R.layout.fruit_item, fruitList);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(fruitAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Fruit fruit = fruitList.get(i);
+                System.out.print("int" + i);
+                System.out.print("long" + l);
+                Toast.makeText(FirstActivity.this, fruit.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                FirstActivity.this, android.R.layout.simple_list_item_1, data
+//        );
+//        ListView listView = (ListView) findViewById(R.id.list_view);
+//        listView.setAdapter(adapter);
+
+
+
 /*
         //获取布局文件定义元素吧，得到按钮实例
 */
@@ -89,11 +189,11 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 //        });
 
 
-        Button buttton1 = (Button) findViewById(R.id.button_1);
-        buttton1.setOnClickListener(this);
+//        Button buttton1 = (Button) findViewById(R.id.button_1);
+//        buttton1.setOnClickListener(this);
 
-        editText = (EditText) findViewById(R.id.edit_text);
-        imageView = (ImageView) findViewById(R.id.image_view);
+//        editText = (EditText) findViewById(R.id.edit_text);
+//        imageView = (ImageView) findViewById(R.id.image_view);
 
 
 //        Button button2 = (Button) findViewById(R.id.button_2);
@@ -118,76 +218,80 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 //
 //        });
 
-        Button button3 = (Button)findViewById(R.id.button_3);
-        button3.setOnClickListener(new  View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(FirstActivity.this,ThirdActivity.class);
-                /*sstartActivityForResult:在活动销毁的时候返回一个结果给上一个活动*/
-                startActivityForResult(intent,1);
-            }
-        });
+//        Button button3 = (Button)findViewById(R.id.button_3);
+//        button3.setOnClickListener(new  View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                Intent intent = new Intent(FirstActivity.this,ThirdActivity.class);
+//                /*sstartActivityForResult:在活动销毁的时候返回一个结果给上一个活动*/
+//                startActivityForResult(intent,1);
+//            }
+//        });
 
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_1:
-                /*取出EditText中输入的值
-                * Editable 也是可以直接通过弹框显示的
-                * Editable inPutText = editText.getText();
-                * */
-                String inPutText = editText.getText().toString();
-                Toast.makeText(FirstActivity.this, inPutText, Toast.LENGTH_SHORT).show();
-                imageView.setImageResource(R.drawable.image_back);
-
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(FirstActivity.this);
-                dialog.setTitle("This is a dialog");
-                dialog.setMessage("something is important");
-                dialog.setCancelable(false);
-                dialog.setPositiveButton("OK",new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog,int which){
-
-                    }
-                });
-                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which){
-
-                    }
-                });
-                dialog.show();
-
-
-
-
-
-
-                break;
-            default:
-                break;
-        }
-    }
+//
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.button_1:
+//                /*取出EditText中输入的值
+//                * Editable 也是可以直接通过弹框显示的
+//                * Editable inPutText = editText.getText();
+//                * */
+//                String inPutText = editText.getText().toString();
+//                Toast.makeText(FirstActivity.this, inPutText, Toast.LENGTH_SHORT).show();
+//                imageView.setImageResource(R.drawable.image_back);
+//
+//
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(FirstActivity.this);
+//                dialog.setTitle("This is a dialog");
+//                dialog.setMessage("something is important");
+//                dialog.setCancelable(false);
+//                dialog.setPositiveButton("OK",new DialogInterface.OnClickListener(){
+//                    @Override
+//                    public void onClick(DialogInterface dialog,int which){
+//
+//                    }
+//                });
+//                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog,int which){
+//
+//                    }
+//                });
+//                dialog.show();
+//
+//
+//
+//
+//
+//
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
 
     /*重写onActivityResult方法来解析使用startActivityForResult方法获取目标活动销毁后传递的数据*/
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-/*重写父类方法，不需要先super（）*/
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    String returnData = data.getStringExtra("data_return");
-                    Toast.makeText(FirstActivity.this, returnData, Toast.LENGTH_SHORT).show();
-                    Log.d("FirstActivity", returnData);
-                }
-                break;
-            default:
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+///*重写父类方法，不需要先super（）*/
+//        switch (requestCode) {
+//            case 1:
+//                if (resultCode == RESULT_OK) {
+//                    String returnData = data.getStringExtra("data_return");
+//                    Toast.makeText(FirstActivity.this, returnData, Toast.LENGTH_SHORT).show();
+//                    Log.d("FirstActivity", returnData);
+//                }
+//                break;
+//            default:
+//        }
+//    }
+
+
+//    list_view
+
 
     @Override
     protected void onStart() {
@@ -226,3 +330,4 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         Log.d(TAG, "onRestart");
     }
 }
+

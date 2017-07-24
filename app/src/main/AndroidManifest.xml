@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FirstActivity"
-            android:label="This is a firstActivity"
+            android:label="FirstActivity"
             android:launchMode="singleTop">
 
             <!-- //intent-filer 表示的是主活动 -->

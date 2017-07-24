@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!--<include layout="@layout/title" />-->
+    <!--自定义控件 TtileLayout-->
+    <!--<com.example.sandwind.onedemo.TtileLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_heighteight="wrap_content" />-->
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+    <!--<Button-->
+        <!--android:id="@+id/button_1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Button 100"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button_2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:text="Button 200"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button_3"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:text="Button 300"/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/text_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="28sp"-->
+        <!--android:textColor="#00ff00"-->
+        <!--android:text="This is a textView"/>-->
 
-    <Button
-        android:id="@+id/button_1"
-        android:layout_width="match_parent"
-        android:textAllCaps="false"
-        android:layout_height="wrap_content"
-        android:text="Button 100"/>
-    <Button
-        android:id="@+id/button_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Button 200"/>
-    <Button
-        android:id="@+id/button_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Button 300"/>
-    <TextView
-        android:id="@+id/text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="28sp"
-        android:textColor="#00ff00"
-        android:text="This is a textView"/>
-
-    <EditText
-        android:id="@+id/edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="This is a EditText"
-        android:maxLines="2"
-        />
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/goods_demand"/>
+    <!--<EditText-->
+        <!--android:id="@+id/edit_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="This is a EditText"-->
+        <!--android:maxLines="2"-->
+        <!--/>-->
+    <!--<ImageView-->
+        <!--android:id="@+id/image_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/goods_demand"/>-->
 
 
 </LinearLayout>
