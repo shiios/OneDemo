@@ -9,6 +9,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /*此处添加implements View.OnClickListener*/
 public class FirstActivity extends BaseActivity {
@@ -70,67 +74,73 @@ public class FirstActivity extends BaseActivity {
 //        return true;
 //    }
 
-    private String[] data = {
-            "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange", "apple", "banan", "peach", "orange"
-    };
 
     private void initFruits() {
 
         for (int i = 0; i < 2; i++) {
-            Fruit apple = new Fruit("apple", R.drawable.image_back);
+            Fruit apple = new Fruit(getRandomLengthName("apple"), R.drawable.image_search);
             fruitList.add(apple);
-            Fruit banana = new Fruit("banana", R.drawable.image_back);
+            Fruit banana = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(banana);
-            Fruit peach = new Fruit("peach", R.drawable.image_back);
+            Fruit peach = new Fruit(getRandomLengthName("apple"), R.drawable.image_back);
             fruitList.add(peach);
-            Fruit apple1 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple1 = new Fruit(getRandomLengthName("apple"), R.drawable.image_loading);
             fruitList.add(apple);
-            Fruit apple2 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple2 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_light);
             fruitList.add(apple);
-            Fruit apple3 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple77 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple4 = new Fruit("apple", R.drawable.image_back);
+            Fruit banana66 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(banana);
+            Fruit peach55 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(peach);
+            Fruit apple4 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple5 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple23 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple6 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple33 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple7 = new Fruit("apple", R.drawable.image_back);
+            Fruit banana333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(banana);
+            Fruit peach3333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(peach);
+            Fruit apple1333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple8 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple23333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple9 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple33333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple0 = new Fruit("apple", R.drawable.image_back);
+            Fruit banana444 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(banana);
+            Fruit peach44 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(peach);
+            Fruit apple155 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple11 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple266 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple22 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple707 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
             fruitList.add(apple);
-            Fruit apple33 = new Fruit("apple", R.drawable.image_back);
+            Fruit banana88 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(banana);
+            Fruit peach67= new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+            fruitList.add(peach);
+            Fruit apple55 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_normal);
             fruitList.add(apple);
-            Fruit apple44 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple55 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple66 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple77 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple88 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple99 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple00 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple112 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple113 = new Fruit("apple", R.drawable.image_back);
-            fruitList.add(apple);
-            Fruit apple114 = new Fruit("apple", R.drawable.image_back);
+            Fruit apple255 = new Fruit(getRandomLengthName("apple"), R.drawable.bg_gray1);
             fruitList.add(apple);
 
         }
+    }
+
+
+    private String getRandomLengthName(String name){
+        Random random = new Random();
+        int length = random.nextInt(20) + 1;
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0;i < length;i++){
+            builder.append(name);
+        }
+        return builder.toString();
     }
 
 
@@ -148,19 +158,42 @@ public class FirstActivity extends BaseActivity {
 //        }
 
         initFruits();
-        FruitAdapter fruitAdapter = new FruitAdapter(FirstActivity.this, R.layout.fruit_item, fruitList);
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(fruitAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Fruit fruit = fruitList.get(i);
-                System.out.print("int" + i);
-                System.out.print("long" + l);
-                Toast.makeText(FirstActivity.this, fruit.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        //RecyclerView:LayoutManager
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        //StaggeredGridLayoutManager(int spanCount, int orientation):spanCount:列数   orientation:排列方向
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        //设置此处来决定数据的展示方向
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(fruitList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+
+
+        //RecyclerView:LayoutManager
+//        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        //设置此处来决定数据的展示方向
+//        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        recyclerView.setLayoutManager(layoutManager);
+//        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(fruitList);
+//        recyclerView.setAdapter(recyclerViewAdapter);
+
+
+        //ListView
+//        FruitAdapter fruitAdapter = new FruitAdapter(FirstActivity.this, R.layout.fruit_item, fruitList);
+//        ListView listView = (ListView) findViewById(R.id.list_view);
+//        listView.setAdapter(fruitAdapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Fruit fruit = fruitList.get(i);
+//                System.out.print("int" + i);
+//                System.out.print("long" + l);
+//                Toast.makeText(FirstActivity.this, fruit.getName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 //                FirstActivity.this, android.R.layout.simple_list_item_1, data
