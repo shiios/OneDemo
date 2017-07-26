@@ -29,6 +29,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -204,7 +207,8 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
                     Request request = new Request.Builder().url("http://172.21.28.26/one.json").build();
                     Response response = client.newCall(request).execute();
                     String responseData = response.body().string();
-                    parseJSONWithObject(responseData);
+                    //parseSystemJSONWithObject(responseData);
+                    parseGSONJSONWithObject(responseData);
                     showResponse(responseData);
 
                 } catch (Exception e) {
@@ -216,8 +220,19 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 
     }
 
-    //解析json数据
-    private void parseJSONWithObject(String jsonData){
+    //GSON解析JSON数据：parseGSONJSONWithObject
+    private void parseGSONJSONWithObject(String jsonData){
+        Gson gson = new Gson();
+        List<App> appList = gson.fromJson(jsonData,new TypeToken<List<App>>(){}.getType());
+        for (App app :appList){
+            Log.d("FirstActivity 123","id is "+app.getId());
+            Log.d("FirstActivity 123","id is "+app.getName());
+            Log.d("FirstActivity 123","id is "+app.getVersion());
+        }
+    }
+
+    //系统方式解析json数据
+    private void parseSystemJSONWithObject(String jsonData){
 
         try {
 
