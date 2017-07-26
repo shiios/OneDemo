@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,19 +26,34 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity {
+public class FirstActivity extends BaseActivity implements View.OnClickListener {
 
     //    private EditText editText;
 //    private ImageView imageView;
-    public static final String TAG = "FirstActivity";
-    private List<Fruit> fruitList = new ArrayList<>();
+    //public static final String TAG = "FirstActivity";
+    //private List<Fruit> fruitList = new ArrayList<>();
 //
 //    /*
 //        //重写onCreateOptionsMenu方法
@@ -75,74 +92,224 @@ public class FirstActivity extends BaseActivity {
 //    }
 
 
-    private void initFruits() {
+//    private void initFruits() {
+//
+//        for (int i = 0; i < 2; i++) {
+//            Fruit apple = new Fruit(getRandomLengthName("apple"), R.drawable.image_search);
+//            fruitList.add(apple);
+//            Fruit banana = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(banana);
+//            Fruit peach = new Fruit(getRandomLengthName("apple"), R.drawable.image_back);
+//            fruitList.add(peach);
+//            Fruit apple1 = new Fruit(getRandomLengthName("apple"), R.drawable.image_loading);
+//            fruitList.add(apple);
+//            Fruit apple2 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_light);
+//            fruitList.add(apple);
+//            Fruit apple77 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit banana66 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(banana);
+//            Fruit peach55 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(peach);
+//            Fruit apple4 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple23 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple33 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit banana333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(banana);
+//            Fruit peach3333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(peach);
+//            Fruit apple1333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple23333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple33333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit banana444 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(banana);
+//            Fruit peach44 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(peach);
+//            Fruit apple155 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple266 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit apple707 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(apple);
+//            Fruit banana88 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(banana);
+//            Fruit peach67= new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
+//            fruitList.add(peach);
+//            Fruit apple55 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_normal);
+//            fruitList.add(apple);
+//            Fruit apple255 = new Fruit(getRandomLengthName("apple"), R.drawable.bg_gray1);
+//            fruitList.add(apple);
+//
+//        }
+//    }
+//
+//
+//    private String getRandomLengthName(String name){
+//        Random random = new Random();
+//        int length = random.nextInt(20) + 1;
+//        StringBuilder builder = new StringBuilder();
+//        for (int i = 0;i < length;i++){
+//            builder.append(name);
+//        }
+//        return builder.toString();
+//    }
 
-        for (int i = 0; i < 2; i++) {
-            Fruit apple = new Fruit(getRandomLengthName("apple"), R.drawable.image_search);
-            fruitList.add(apple);
-            Fruit banana = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(banana);
-            Fruit peach = new Fruit(getRandomLengthName("apple"), R.drawable.image_back);
-            fruitList.add(peach);
-            Fruit apple1 = new Fruit(getRandomLengthName("apple"), R.drawable.image_loading);
-            fruitList.add(apple);
-            Fruit apple2 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_light);
-            fruitList.add(apple);
-            Fruit apple77 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit banana66 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(banana);
-            Fruit peach55 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(peach);
-            Fruit apple4 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple23 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple33 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit banana333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(banana);
-            Fruit peach3333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(peach);
-            Fruit apple1333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple23333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple33333 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit banana444 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(banana);
-            Fruit peach44 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(peach);
-            Fruit apple155 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple266 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit apple707 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(apple);
-            Fruit banana88 = new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(banana);
-            Fruit peach67= new Fruit(getRandomLengthName("apple"), R.drawable.image_load_fail);
-            fruitList.add(peach);
-            Fruit apple55 = new Fruit(getRandomLengthName("apple"), R.drawable.baobiao_normal);
-            fruitList.add(apple);
-            Fruit apple255 = new Fruit(getRandomLengthName("apple"), R.drawable.bg_gray1);
-            fruitList.add(apple);
+
+//
+//    private List<Msg> msgList = new ArrayList<>();
+//    private EditText inputText;
+//    private Button send;
+//    private RecyclerView msgRecyclerView;
+//    private MsgAdapter msgAdapter;
+
+//    private void initMsgs() {
+//        Msg msg1 = new Msg("hello guy", Msg.TYPE_RECEIVED);
+//        msgList.add(msg1);
+//        Msg msg2 = new Msg("hi boy", Msg.TYPE_SEND);
+//        msgList.add(msg2);
+//        Msg msg3 = new Msg("This is tom", Msg.TYPE_RECEIVED);
+//        msgList.add(msg3);
+//
+//
+//    }
+
+
+    //HttpURLConnection
+    TextView responseText;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_request) {
+            //sendGETResWithUrl();
+            sendPOSTResWithUrl();
 
         }
     }
 
+    //POST方法
+    private void sendPOSTResWithUrl() {
 
-    private String getRandomLengthName(String name){
-        Random random = new Random();
-        int length = random.nextInt(20) + 1;
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0;i < length;i++){
-            builder.append(name);
-        }
-        return builder.toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().url("http://172.21.28.26/one.json").build();
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    parseJSONWithObject(responseData);
+                    showResponse(responseData);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
     }
 
+    //解析json数据
+    private void parseJSONWithObject(String jsonData){
+
+        try {
+
+            JSONArray jsonArray = new JSONArray(jsonData);
+            for (int i = 0; i < jsonArray.length();i++){
+                //系统解析方式
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("id");
+                String version = jsonObject.getString("version");
+                String name = jsonObject.getString("name");
+                Log.d("FirstActivity","id is " + id);
+                Log.d("FirstActivity","version is " + version );
+                Log.d("FirstActivity","name is " + name );
+
+            }
+
+            //主线程异常
+//            Toast.makeText(FirstActivity.this,"解析成功",Toast.LENGTH_SHORT).show();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    //GET方法
+    private void sendGETResWithUrl() {
+        //开启线程进行网络请求
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                HttpURLConnection connection = null;
+                BufferedReader reader = null;
+
+                try {
+
+                    URL url = new URL("http://www.cocoachina.com");
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setConnectTimeout(8000);
+                    connection.setReadTimeout(8000);
+                    InputStream stream = connection.getInputStream();
+
+                    //读取输入流
+                    reader = new BufferedReader(new InputStreamReader(stream));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+
+                        response.append(line);
+                    }
+
+                    showResponse(response.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+
+
+            }
+
+        }).start();
+    }
+
+    private void showResponse(final String response) {
+        //运行UI线程
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+//                Toast.makeText(FirstActivity.this,"1234",Toast.LENGTH_SHORT).show();
+                 String res = response;
+                Log.d("response", res);
+                responseText.setText(response);
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,22 +319,62 @@ public class FirstActivity extends BaseActivity {
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
 
+        //HttpURLConnection
+        Button sendRes = (Button) findViewById(R.id.btn_request);
+        responseText = (TextView) findViewById(R.id.Response_Data);
+        sendRes.setOnClickListener(this);
+
+
+        //webview加载网页
+//        WebView webView = (WebView)findViewById(R.id.webView);
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.setWebViewClient(new WebViewClient());
+//        webView.loadUrl("http://baidu.com");
+
+
+        //聊天
+//        initMsgs();
+//
+//        inputText = (EditText)findViewById(R.id.input_text);
+//        send = (Button)findViewById(R.id.send);
+//        msgRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        msgRecyclerView.setLayoutManager(layoutManager);
+//        msgAdapter = new MsgAdapter(msgList);
+//        msgRecyclerView.setAdapter(msgAdapter);
+//
+//        send.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                String content = inputText.getText().toString();
+//                if (!"".equals(content)){
+//                    Msg msg = new Msg(content,Msg.TYPE_SEND);
+//                    msgList.add(msg);
+//                    //当有新的消息的时候
+//                    msgAdapter.notifyItemInserted(msgList.size() - 1);
+//                    //定位消息到最后一行
+//                    msgRecyclerView.scrollToPosition(msgList.size() - 1);
+//                    //情况输入框内容
+//                    inputText.setText("");
+//                }
+//            }
+//        });
+
 //        ActionBar actionBar = getSupportActionBar();
 //        if (actionBar !=null){
 //            actionBar.hide();
 //        }
 
-        initFruits();
+        // initFruits();
 
         //RecyclerView:LayoutManager
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        //StaggeredGridLayoutManager(int spanCount, int orientation):spanCount:列数   orientation:排列方向
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
-        //设置此处来决定数据的展示方向
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(fruitList);
-        recyclerView.setAdapter(recyclerViewAdapter);
-
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        //StaggeredGridLayoutManager(int spanCount, int orientation):spanCount:列数   orientation:排列方向
+//        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+//        //设置此处来决定数据的展示方向
+//        recyclerView.setLayoutManager(layoutManager);
+//        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(fruitList);
+//        recyclerView.setAdapter(recyclerViewAdapter);
 
 
         //RecyclerView:LayoutManager
@@ -326,41 +533,41 @@ public class FirstActivity extends BaseActivity {
 //    list_view
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    /*执行finish（）方法时，会调用此生命周期方法*/
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart");
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        Log.d(TAG, "onStart");
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.d(TAG, "onResume");
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Log.d(TAG, "onPause");
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        Log.d(TAG, "onStop");
+//    }
+//
+//    /*执行finish（）方法时，会调用此生命周期方法*/
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy");
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        Log.d(TAG, "onRestart");
+//    }
 }
 

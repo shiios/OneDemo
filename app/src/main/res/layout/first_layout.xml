@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#d8e0d8">
     <!--<include layout="@layout/title" />-->
     <!--自定义控件 TtileLayout-->
     <!--<com.example.sandwind.onedemo.TtileLayout-->
@@ -13,11 +15,57 @@
         <!--android:layout_height="match_parent"></ListView>-->
 
 
-    <!--recycleview-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <Button
+        android:id="@+id/btn_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Request"/>
+    //安卓控件重要特性，即使项目中没有使用某个控件，但是只要是在layout中定义了也会对其他空间造成影响
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/Response_Data"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </ScrollView>
+    <!--<WebView-->
+        <!--android:id="@+id/webView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></WebView>-->
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1">-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--&gt;-->
+        <!--<EditText-->
+            <!--android:id="@+id/input_text"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:hint="Type something here"-->
+            <!--android:maxLines="2"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/send"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="send"/>-->
+    <!--</LinearLayout>-->
+
+
+
+    <!--recycleview-->
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
     <!--<Button-->
         <!--android:id="@+id/button_1"-->
         <!--android:layout_width="match_parent"-->
