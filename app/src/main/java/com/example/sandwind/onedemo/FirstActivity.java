@@ -46,9 +46,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import until.HttpCallBackListener;
+import until.HttpUntil;
 
 /*此处添加implements View.OnClickListener*/
 public class FirstActivity extends BaseActivity implements View.OnClickListener {
@@ -190,7 +193,42 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         if (view.getId() == R.id.btn_request) {
             //sendGETResWithUrl();
-            sendPOSTResWithUrl();
+           // sendPOSTResWithUrl();
+
+
+//            String address = "http://172.21.28.26/one.json";
+//            HttpUntil.sendHttpRequest(address, new HttpCallBackListener() {
+//                @Override
+//                public void onFinish(String response) {
+//                    //parseSystemJSONWithObject(response);s
+//                    parseGSONJSONWithObject(response.toString());
+//                }
+//
+//                @Override
+//                public void onError(Exception e) {
+//
+//
+//                }
+//            });
+
+
+            HttpUntil.sendOkHttpResquest("http://172.21.28.26/one.json",new okhttp3.Callback(){
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    Log.d("res",responseData);
+                    showResponse(responseData);
+                   // parseGSONJSONWithObject(responseData);
+                    parseSystemJSONWithObject(responseData);
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+            });
+
 
         }
     }
@@ -207,8 +245,8 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
                     Request request = new Request.Builder().url("http://172.21.28.26/one.json").build();
                     Response response = client.newCall(request).execute();
                     String responseData = response.body().string();
-                    //parseSystemJSONWithObject(responseData);
-                    parseGSONJSONWithObject(responseData);
+                    parseSystemJSONWithObject(responseData);
+                    //parseGSONJSONWithObject(responseData);
                     showResponse(responseData);
 
                 } catch (Exception e) {
@@ -229,6 +267,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             Log.d("FirstActivity 123","id is "+app.getName());
             Log.d("FirstActivity 123","id is "+app.getVersion());
         }
+
     }
 
     //系统方式解析json数据
