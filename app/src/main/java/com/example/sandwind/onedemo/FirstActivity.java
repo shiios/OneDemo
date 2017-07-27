@@ -196,38 +196,40 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
            // sendPOSTResWithUrl();
 
 
-//            String address = "http://172.21.28.26/one.json";
-//            HttpUntil.sendHttpRequest(address, new HttpCallBackListener() {
-//                @Override
-//                public void onFinish(String response) {
-//                    //parseSystemJSONWithObject(response);s
-//                    parseGSONJSONWithObject(response.toString());
-//                }
-//
-//                @Override
-//                public void onError(Exception e) {
-//
-//
-//                }
-//            });
-
-
-            HttpUntil.sendOkHttpResquest("http://172.21.28.26/one.json",new okhttp3.Callback(){
-
+            String address = "http://172.21.28.26/one.json";
+            HttpUntil.sendHttpRequest(address, new HttpCallBackListener() {
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String responseData = response.body().string();
-                    Log.d("res",responseData);
-                    showResponse(responseData);
-                   // parseGSONJSONWithObject(responseData);
-                    parseSystemJSONWithObject(responseData);
+                public void onFinish(String response) {
+                    //parseSystemJSONWithObject(response);s
+                    showResponse(response);
+                    Log.d("response",response);
+                    parseGSONJSONWithObject(response);
                 }
 
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onError(Exception e) {
+
 
                 }
             });
+
+
+//            HttpUntil.sendOkHttpResquest("http://172.21.28.26/one.json",new okhttp3.Callback(){
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    String responseData = response.body().string();
+//                    Log.d("res",responseData);
+//                    showResponse(responseData);
+//                   // parseGSONJSONWithObject(responseData);
+//                    parseSystemJSONWithObject(responseData);
+//                }
+//
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//
+//                }
+//            });
 
 
         }
@@ -278,6 +280,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             JSONArray jsonArray = new JSONArray(jsonData);
             for (int i = 0; i < jsonArray.length();i++){
                 //系统解析方式
+                //获取单个对象
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String id = jsonObject.getString("id");
                 String version = jsonObject.getString("version");
