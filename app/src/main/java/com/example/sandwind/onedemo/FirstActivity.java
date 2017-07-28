@@ -425,16 +425,16 @@ public class FirstActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case TAKE_PHOTO:
-                if (resultCode == -1){
+                if (resultCode == -1) {
                     try {
                         //显示拍照照片
-                        Log.d("showimage",imageUri.toString());
+                        Log.d("showimage", imageUri.toString());
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         //此处应当注意setImageBitmap与setImageInt，要看清上面的参数是什么
                         picture.setImageBitmap(bitmap);
-                    }catch (FileNotFoundException e){
+                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
@@ -459,28 +459,28 @@ public class FirstActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 File outPutImage = new File(getExternalCacheDir(), "output_image.jpg");
-             try {
-                 if (outPutImage.exists()){
-                     outPutImage.delete();
-                 }
-                 outPutImage.createNewFile();
+                try {
+                    if (outPutImage.exists()) {
+                        outPutImage.delete();
+                    }
+                    outPutImage.createNewFile();
 
-             }catch (IOException e){
-                 e.printStackTrace();
-             }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-             if (Build.VERSION.SDK_INT >= 24){
-                 imageUri = FileProvider.getUriForFile(FirstActivity.this,"com.example.sandwind.onedemo.fileprovider",outPutImage);
-             }else {
-                 imageUri = Uri.fromFile(outPutImage);
-             }
+                if (Build.VERSION.SDK_INT >= 24) {
+                    imageUri = FileProvider.getUriForFile(FirstActivity.this, "com.example.sandwind.onedemo.fileprovider", outPutImage);
+                } else {
+                    imageUri = Uri.fromFile(outPutImage);
+                }
 
-             Log.d("imageUri",imageUri.toString());
+                Log.d("imageUri", imageUri.toString());
 
-             //启动相机程序
+                //启动相机程序
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                startActivityForResult(intent,TAKE_PHOTO);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, TAKE_PHOTO);
             }
         });
         //发送通知
