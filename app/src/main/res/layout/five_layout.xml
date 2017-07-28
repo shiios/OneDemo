@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.sandwind.onedemo.FiveActivity">
 
-   <Button
-       android:id="@+id/button1"
-       android:text="button1"
-       android:layout_gravity="left|top"
-       app:layout_widthPercent="50%"
-       app:layout_heightPercent="50%"/>
-    <Button
-        android:id="@+id/button2"
-        android:text="button2"
-        android:layout_gravity="right|top"
-        app:layout_widthPercent="50%"
-        app:layout_heightPercent="50%"/>
-    <Button
-        android:id="@+id/button3"
-        android:text="button3"
-        android:layout_gravity="left|bottom"
-        app:layout_widthPercent="50%"
-        app:layout_heightPercent="50%"/>
-    <Button
-        android:id="@+id/button4"
-        android:text="button4"
-        android:layout_gravity="right|bottom"
-        app:layout_widthPercent="50%"
-        app:layout_heightPercent="50%"/>
 
-</android.support.percent.PercentFrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:text="This is a voice"/>
+
+
+   <!--<Button-->
+       <!--android:id="@+id/button1"-->
+       <!--android:text="button1"-->
+       <!--android:layout_gravity="left|top"-->
+       <!--app:layout_widthPercent="50%"-->
+       <!--app:layout_heightPercent="50%"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button2"-->
+        <!--android:text="button2"-->
+        <!--android:layout_gravity="right|top"-->
+        <!--app:layout_widthPercent="50%"-->
+        <!--app:layout_heightPercent="50%"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button3"-->
+        <!--android:text="button3"-->
+        <!--android:layout_gravity="left|bottom"-->
+        <!--app:layout_widthPercent="50%"-->
+        <!--app:layout_heightPercent="50%"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button4"-->
+        <!--android:text="button4"-->
+        <!--android:layout_gravity="right|bottom"-->
+        <!--app:layout_widthPercent="50%"-->
+        <!--app:layout_heightPercent="50%"/>-->
+
+</RelativeLayout>

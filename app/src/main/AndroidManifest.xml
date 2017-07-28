@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sandwind.onedemo">
     <!--开放用户允许访问权限-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
     <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>-->
     <!--<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>-->
@@ -14,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
         <activity
             android:name=".FirstActivity"
             android:label="FirstActivity"
@@ -26,6 +30,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.sandwind.onedemo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.example.sandwind.onedemo.fileprovider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--&lt;!&ndash;<meta-data&ndash;&gt;-->
+        <!--&lt;!&ndash;android:name="android.support.FILE_PROVIDER.PATHS"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:resource="@xml/file_paths"/>&ndash;&gt;-->
+        <!--</provider>-->
+
         <activity
             android:name=".SecondActivity"
             android:launchMode="singleInstance">

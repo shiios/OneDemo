@@ -1,14 +1,25 @@
 package com.example.sandwind.onedemo;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.Image;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.preference.DialogPreference;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -37,6 +48,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,7 +67,7 @@ import until.HttpCallBackListener;
 import until.HttpUntil;
 
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity implements View.OnClickListener {
+public class FirstActivity extends BaseActivity {
 
     //    private EditText editText;
 //    private ImageView imageView;
@@ -189,29 +202,29 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     //HttpURLConnection
     TextView responseText;
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_request) {
-            //sendGETResWithUrl();
-           // sendPOSTResWithUrl();
+//    @Override
+//    public void onClick(View view) {
+//        if (view.getId() == R.id.btn_request) {
+//            //sendGETResWithUrl();
+//           // sendPOSTResWithUrl();
 
 
-            String address = "http://172.21.28.26/one.json";
-            HttpUntil.sendHttpRequest(address, new HttpCallBackListener() {
-                @Override
-                public void onFinish(String response) {
-                    //parseSystemJSONWithObject(response);s
-                    showResponse(response);
-                    Log.d("response",response);
-                    parseGSONJSONWithObject(response);
-                }
-
-                @Override
-                public void onError(Exception e) {
-
-
-                }
-            });
+//            String address = "http://172.21.28.26/one.json";
+//            HttpUntil.sendHttpRequest(address, new HttpCallBackListener() {
+//                @Override
+//                public void onFinish(String response) {
+//                    //parseSystemJSONWithObject(response);s
+//                    showResponse(response);
+//                    Log.d("response",response);
+//                    parseGSONJSONWithObject(response);
+//                }
+//
+//                @Override
+//                public void onError(Exception e) {
+//
+//
+//                }
+//            });
 
 
 //            HttpUntil.sendOkHttpResquest("http://172.21.28.26/one.json",new okhttp3.Callback(){
@@ -231,9 +244,9 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 //                }
 //            });
 
-
-        }
-    }
+//
+//        }
+//    }
 
     //POST方法
     private void sendPOSTResWithUrl() {
@@ -261,33 +274,34 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     }
 
     //GSON解析JSON数据：parseGSONJSONWithObject
-    private void parseGSONJSONWithObject(String jsonData){
+    private void parseGSONJSONWithObject(String jsonData) {
         Gson gson = new Gson();
-        List<App> appList = gson.fromJson(jsonData,new TypeToken<List<App>>(){}.getType());
-        for (App app :appList){
-            Log.d("FirstActivity 123","id is "+app.getId());
-            Log.d("FirstActivity 123","id is "+app.getName());
-            Log.d("FirstActivity 123","id is "+app.getVersion());
+        List<App> appList = gson.fromJson(jsonData, new TypeToken<List<App>>() {
+        }.getType());
+        for (App app : appList) {
+            Log.d("FirstActivity 123", "id is " + app.getId());
+            Log.d("FirstActivity 123", "id is " + app.getName());
+            Log.d("FirstActivity 123", "id is " + app.getVersion());
         }
 
     }
 
     //系统方式解析json数据
-    private void parseSystemJSONWithObject(String jsonData){
+    private void parseSystemJSONWithObject(String jsonData) {
 
         try {
 
             JSONArray jsonArray = new JSONArray(jsonData);
-            for (int i = 0; i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 //系统解析方式
                 //获取单个对象
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String id = jsonObject.getString("id");
                 String version = jsonObject.getString("version");
                 String name = jsonObject.getString("name");
-                Log.d("FirstActivity","id is " + id);
-                Log.d("FirstActivity","version is " + version );
-                Log.d("FirstActivity","name is " + name );
+                Log.d("FirstActivity", "id is " + id);
+                Log.d("FirstActivity", "version is " + version);
+                Log.d("FirstActivity", "name is " + name);
 
             }
 
@@ -295,7 +309,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 //            Toast.makeText(FirstActivity.this,"解析成功",Toast.LENGTH_SHORT).show();
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -360,12 +374,73 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             public void run() {
 
 //                Toast.makeText(FirstActivity.this,"1234",Toast.LENGTH_SHORT).show();
-                 String res = response;
+                String res = response;
                 Log.d("response", res);
                 responseText.setText(response);
 
             }
         });
+    }
+
+
+    //发送通知
+
+
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.send_voice:
+//
+//                Intent intent = new Intent(this,FiveActivity.class);
+//                PendingIntent pi = PendingIntent.getActivity(this,0,intent,0);
+//
+//                NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//                Notification notification = new NotificationCompat.Builder(this)
+//                        .setContentTitle("紧急通知")
+//                        //.setContentText("hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!")
+//                        .setWhen(System.currentTimeMillis())
+//                        //设置通知优先级直接弹窗显示
+//                        .setPriority(NotificationCompat.PRIORITY_MAX)
+//                        //展示更多的通知栏文字
+//                        .setStyle(new NotificationCompat.BigTextStyle().bigText("hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello  world!hello "))
+//                        .setSmallIcon(R.mipmap.ic_launcher)
+//                        .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))
+//                        .setContentIntent(pi)
+//                        .setVibrate(new long[]{0,1000,1000,1000})
+//                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+//                        //.setLights(Color.GREEN,1000,1000)
+//                       // .setAutoCancel(true)
+//                        .build();
+//                manager.notify(1,notification);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+
+    public static final int TAKE_PHOTO = 1;
+    private ImageView picture;
+    private Uri imageUri;
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode){
+            case TAKE_PHOTO:
+                if (resultCode == RESULT_OK){
+                    try {
+                        //显示拍照照片
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        //此处应当注意setImageBitmap与setImageInt，要看清上面的参数是什么
+                        picture.setImageBitmap(bitmap);
+                    }catch (FileNotFoundException e){
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -376,10 +451,44 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
 
+        Button takePhoto = (Button) findViewById(R.id.take_photo);
+        picture = (ImageView) findViewById(R.id.picture);
+        //如果开头中没有写 View.OnClickListener，那么就在方法调用处写
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File outPutImage = new File(getExternalCacheDir(), "output_image.jpg");
+             try {
+                 if (outPutImage.exists()){
+                     outPutImage.delete();
+                 }
+                 outPutImage.createNewFile();
+
+             }catch (IOException e){
+                 e.printStackTrace();
+             }
+
+             if (Build.VERSION.SDK_INT >= 24){
+                 imageUri = FileProvider.getUriForFile(FirstActivity.this,"com.example.sandwind.onedemo.fileprovider",outPutImage);
+             }else {
+                 imageUri = Uri.fromFile(outPutImage);
+             }
+
+             //启动相机程序
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent,TAKE_PHOTO);
+            }
+        });
+        //发送通知
+        //Button sendVoice = (Button) findViewById(R.id.send_voice);
+        //sendVoice.setOnClickListener(this);
+
+
         //HttpURLConnection
-        Button sendRes = (Button) findViewById(R.id.btn_request);
-        responseText = (TextView) findViewById(R.id.Response_Data);
-        sendRes.setOnClickListener(this);
+//        Button sendRes = (Button) findViewById(R.id.btn_request);
+//        responseText = (TextView) findViewById(R.id.Response_Data);
+//        sendRes.setOnClickListener(this);
 
 
         //webview加载网页

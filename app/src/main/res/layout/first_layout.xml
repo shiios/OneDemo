@@ -16,20 +16,39 @@
 
 
     <Button
-        android:id="@+id/btn_request"
+        android:id="@+id/take_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send Request"/>
-    //安卓控件重要特性，即使项目中没有使用某个控件，但是只要是在layout中定义了也会对其他空间造成影响
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/Response_Data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    </ScrollView>
+        android:text="Take Photo"/>
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    //通知栏事件
+    <!--<Button-->
+        <!--android:id="@+id/send_voice"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="send_voice"/>-->
+
+    //网络请求
+    <!--<Button-->
+        <!--android:id="@+id/btn_request"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Send Request"/>-->
+    <!--//安卓控件重要特性，即使项目中没有使用某个控件，但是只要是在layout中定义了也会对其他空间造成影响-->
+    <!--<ScrollView-->
+        <!--android:id="@+id/scrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--<TextView-->
+        <!--android:id="@+id/Response_Data"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+    <!--</ScrollView>-->
     <!--<WebView-->
         <!--android:id="@+id/webView"-->
         <!--android:layout_width="match_parent"-->
