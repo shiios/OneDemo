@@ -425,11 +425,12 @@ public class FirstActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode){
+        switch (requestCode){
             case TAKE_PHOTO:
-                if (resultCode == RESULT_OK){
+                if (resultCode == -1){
                     try {
                         //显示拍照照片
+                        Log.d("showimage",imageUri.toString());
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         //此处应当注意setImageBitmap与setImageInt，要看清上面的参数是什么
                         picture.setImageBitmap(bitmap);
@@ -473,6 +474,8 @@ public class FirstActivity extends BaseActivity {
              }else {
                  imageUri = Uri.fromFile(outPutImage);
              }
+
+             Log.d("imageUri",imageUri.toString());
 
              //启动相机程序
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
