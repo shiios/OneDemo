@@ -1,132 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
     <!--<include layout="@layout/title" />-->
     <!--自定义控件 TtileLayout-->
     <!--<com.example.sandwind.onedemo.TtileLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_heighteight="wrap_content" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_heighteight="wrap_content" />-->
     <!--<ListView-->
-        <!--android:id="@+id/list_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"></ListView>-->
+    <!--android:id="@+id/list_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></ListView>-->
 
 
-    <Button
-        android:id="@+id/take_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Take Photo"/>
-    <Button
-        android:id="@+id/choose_from_album"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose From Albumn"/>
-    <ImageView
-        android:id="@+id/picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+    //Fragment
+
+    <fragment
+        android:id="@+id/left_fragment"
+        android:name="com.example.sandwind.onedemo.LeftFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+
+    <!--<fragment-->
+    <!--android:id="@+id/right_fragment"-->
+    <!--android:name="com.example.sandwind.onedemo.RightFragment"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1" />-->
+    <FrameLayout
+        android:id="@+id/right_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </FrameLayout>
+
+
+    //拍照显示图片
+    <!--<Button-->
+    <!--android:id="@+id/take_photo"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Take Photo"/>-->
+    <!--<Button-->
+    <!--android:id="@+id/choose_from_album"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Choose From Albumn"/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/picture"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"/>-->
 
     //通知栏事件
     <!--<Button-->
-        <!--android:id="@+id/send_voice"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="send_voice"/>-->
+    <!--android:id="@+id/send_voice"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="send_voice"/>-->
 
     //网络请求
     <!--<Button-->
-        <!--android:id="@+id/btn_request"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Send Request"/>-->
+    <!--android:id="@+id/btn_request"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Send Request"/>-->
     <!--//安卓控件重要特性，即使项目中没有使用某个控件，但是只要是在layout中定义了也会对其他空间造成影响-->
     <!--<ScrollView-->
-        <!--android:id="@+id/scrollView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <!--android:id="@+id/scrollView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
     <!--<TextView-->
-        <!--android:id="@+id/Response_Data"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+    <!--android:id="@+id/Response_Data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
     <!--</ScrollView>-->
     <!--<WebView-->
-        <!--android:id="@+id/webView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"></WebView>-->
+    <!--android:id="@+id/webView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></WebView>-->
 
     <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recycler_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
+    <!--android:id="@+id/recycler_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="1">-->
     <!--</android.support.v7.widget.RecyclerView>-->
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--&gt;-->
-        <!--<EditText-->
-            <!--android:id="@+id/input_text"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:hint="Type something here"-->
-            <!--android:maxLines="2"/>-->
-        <!--<Button-->
-            <!--android:id="@+id/send"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="send"/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--&gt;-->
+    <!--<EditText-->
+    <!--android:id="@+id/input_text"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:hint="Type something here"-->
+    <!--android:maxLines="2"/>-->
+    <!--<Button-->
+    <!--android:id="@+id/send"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="send"/>-->
     <!--</LinearLayout>-->
-
 
 
     <!--recycleview-->
     <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recycler_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+    <!--android:id="@+id/recycler_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
     <!--<Button-->
-        <!--android:id="@+id/button_1"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Button 100"/>-->
+    <!--android:id="@+id/button_1"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Button 100"/>-->
     <!--<Button-->
-        <!--android:id="@+id/button_2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:text="Button 200"/>-->
+    <!--android:id="@+id/button_2"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:text="Button 200"/>-->
     <!--<Button-->
-        <!--android:id="@+id/button_3"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:text="Button 300"/>-->
+    <!--android:id="@+id/button_3"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:text="Button 300"/>-->
     <!--<TextView-->
-        <!--android:id="@+id/text_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center"-->
-        <!--android:textSize="28sp"-->
-        <!--android:textColor="#00ff00"-->
-        <!--android:text="This is a textView"/>-->
+    <!--android:id="@+id/text_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:textSize="28sp"-->
+    <!--android:textColor="#00ff00"-->
+    <!--android:text="This is a textView"/>-->
 
     <!--<EditText-->
-        <!--android:id="@+id/edit_text"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="This is a EditText"-->
-        <!--android:maxLines="2"-->
-        <!--/>-->
+    <!--android:id="@+id/edit_text"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:hint="This is a EditText"-->
+    <!--android:maxLines="2"-->
+    <!--/>-->
     <!--<ImageView-->
-        <!--android:id="@+id/image_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/goods_demand"/>-->
+    <!--android:id="@+id/image_view"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@drawable/goods_demand"/>-->
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.sandwind.onedemo;
 
+import android.support.v4.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,6 +21,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
@@ -75,7 +78,7 @@ import until.HttpCallBackListener;
 import until.HttpUntil;
 
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity {
+public class FirstActivity extends BaseActivity implements View.OnClickListener {
 
     //    private EditText editText;
 //    private ImageView imageView;
@@ -256,139 +259,139 @@ public class FirstActivity extends BaseActivity {
 //        }
 //    }
 
-    //POST方法
-    private void sendPOSTResWithUrl() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().url("http://172.21.28.26/one.json").build();
-                    Response response = client.newCall(request).execute();
-                    String responseData = response.body().string();
-                    parseSystemJSONWithObject(responseData);
-                    //parseGSONJSONWithObject(responseData);
-                    showResponse(responseData);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-
-    }
-
-    //GSON解析JSON数据：parseGSONJSONWithObject
-    private void parseGSONJSONWithObject(String jsonData) {
-        Gson gson = new Gson();
-        List<App> appList = gson.fromJson(jsonData, new TypeToken<List<App>>() {
-        }.getType());
-        for (App app : appList) {
-            Log.d("FirstActivity 123", "id is " + app.getId());
-            Log.d("FirstActivity 123", "id is " + app.getName());
-            Log.d("FirstActivity 123", "id is " + app.getVersion());
-        }
-
-    }
-
-    //系统方式解析json数据
-    private void parseSystemJSONWithObject(String jsonData) {
-
-        try {
-
-            JSONArray jsonArray = new JSONArray(jsonData);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                //系统解析方式
-                //获取单个对象
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String id = jsonObject.getString("id");
-                String version = jsonObject.getString("version");
-                String name = jsonObject.getString("name");
-                Log.d("FirstActivity", "id is " + id);
-                Log.d("FirstActivity", "version is " + version);
-                Log.d("FirstActivity", "name is " + name);
-
-            }
-
-            //主线程异常
-//            Toast.makeText(FirstActivity.this,"解析成功",Toast.LENGTH_SHORT).show();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    //GET方法
-    private void sendGETResWithUrl() {
-        //开启线程进行网络请求
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                HttpURLConnection connection = null;
-                BufferedReader reader = null;
-
-                try {
-
-                    URL url = new URL("http://www.cocoachina.com");
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    InputStream stream = connection.getInputStream();
-
-                    //读取输入流
-                    reader = new BufferedReader(new InputStreamReader(stream));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-
-                        response.append(line);
-                    }
-
-                    showResponse(response.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                }
-
-
-            }
-
-        }).start();
-    }
-
-    private void showResponse(final String response) {
-        //运行UI线程
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-//                Toast.makeText(FirstActivity.this,"1234",Toast.LENGTH_SHORT).show();
-                String res = response;
-                Log.d("response", res);
-                responseText.setText(response);
-
-            }
-        });
-    }
+//    //POST方法
+//    private void sendPOSTResWithUrl() {
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//
+//                    OkHttpClient client = new OkHttpClient();
+//                    Request request = new Request.Builder().url("http://172.21.28.26/one.json").build();
+//                    Response response = client.newCall(request).execute();
+//                    String responseData = response.body().string();
+//                    parseSystemJSONWithObject(responseData);
+//                    //parseGSONJSONWithObject(responseData);
+//                    showResponse(responseData);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+//
+//
+//    }
+//
+//    //GSON解析JSON数据：parseGSONJSONWithObject
+//    private void parseGSONJSONWithObject(String jsonData) {
+//        Gson gson = new Gson();
+//        List<App> appList = gson.fromJson(jsonData, new TypeToken<List<App>>() {
+//        }.getType());
+//        for (App app : appList) {
+//            Log.d("FirstActivity 123", "id is " + app.getId());
+//            Log.d("FirstActivity 123", "id is " + app.getName());
+//            Log.d("FirstActivity 123", "id is " + app.getVersion());
+//        }
+//
+//    }
+//
+//    //系统方式解析json数据
+//    private void parseSystemJSONWithObject(String jsonData) {
+//
+//        try {
+//
+//            JSONArray jsonArray = new JSONArray(jsonData);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                //系统解析方式
+//                //获取单个对象
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                String id = jsonObject.getString("id");
+//                String version = jsonObject.getString("version");
+//                String name = jsonObject.getString("name");
+//                Log.d("FirstActivity", "id is " + id);
+//                Log.d("FirstActivity", "version is " + version);
+//                Log.d("FirstActivity", "name is " + name);
+//
+//            }
+//
+//            //主线程异常
+////            Toast.makeText(FirstActivity.this,"解析成功",Toast.LENGTH_SHORT).show();
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
+//
+//    //GET方法
+//    private void sendGETResWithUrl() {
+//        //开启线程进行网络请求
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                HttpURLConnection connection = null;
+//                BufferedReader reader = null;
+//
+//                try {
+//
+//                    URL url = new URL("http://www.cocoachina.com");
+//                    connection = (HttpURLConnection) url.openConnection();
+//                    connection.setRequestMethod("GET");
+//                    connection.setConnectTimeout(8000);
+//                    connection.setReadTimeout(8000);
+//                    InputStream stream = connection.getInputStream();
+//
+//                    //读取输入流
+//                    reader = new BufferedReader(new InputStreamReader(stream));
+//                    StringBuilder response = new StringBuilder();
+//                    String line;
+//                    while ((line = reader.readLine()) != null) {
+//
+//                        response.append(line);
+//                    }
+//
+//                    showResponse(response.toString());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    if (reader != null) {
+//                        try {
+//                            reader.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    if (connection != null) {
+//                        connection.disconnect();
+//                    }
+//                }
+//
+//
+//            }
+//
+//        }).start();
+//    }
+//
+//    private void showResponse(final String response) {
+//        //运行UI线程
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+////                Toast.makeText(FirstActivity.this,"1234",Toast.LENGTH_SHORT).show();
+//                String res = response;
+//                Log.d("response", res);
+//                responseText.setText(response);
+//
+//            }
+//        });
+//    }
 
 
     //发送通知
@@ -426,129 +429,151 @@ public class FirstActivity extends BaseActivity {
 //        }
 //    }
 
-    //拍照
-    public static final int TAKE_PHOTO = 1;
-    //选择照片
-    public static final int CHOOSE_PHOTO = 2;
-    private ImageView picture;
-    private Uri imageUri;
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        //显示拍照照片
-                        Log.d("showimage", imageUri.toString());
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        //此处应当注意setImageBitmap与setImageInt，要看清上面的参数是什么
-                        picture.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                break;
-            case CHOOSE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    //判断手机系统版本
-//                    if (Build.VERSION.SDK_INT >= 19) {
-//                        //4.4及以上系统使用这个方法处理图片
-//                        handleImageOnKitKat(data);
-//                    } else {
-//                        //4.4以下系统使用这个方法处理图片
-//                        handleImageBeforeKitKat(data);
+//    //拍照
+//    public static final int TAKE_PHOTO = 1;
+//    //选择照片
+//    public static final int CHOOSE_PHOTO = 2;
+//    private ImageView picture;
+//    private Uri imageUri;
+//
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (requestCode) {
+//            case TAKE_PHOTO:
+//                if (resultCode == RESULT_OK) {
+//                    try {
+//                        //显示拍照照片
+//                        Log.d("showimage", imageUri.toString());
+//                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+//                        //此处应当注意setImageBitmap与setImageInt，要看清上面的参数是什么
+//                        picture.setImageBitmap(bitmap);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
 //                    }
-                    //4.4以下系统使用这个方法处理图片
-                    handleImageOnKitKat(data);
-                }
-            default:
-                break;
-        }
-    }
-    //
-    private void handleImageBeforeKitKat(Intent data){
-        Uri uri = data.getData();
-        String imagePath = getImagePath(uri,null);
-        displayImage(imagePath);
-    }
+//                }
+//
+//                break;
+//            case CHOOSE_PHOTO:
+//                if (resultCode == RESULT_OK) {
+//                    //判断手机系统版本
+////                    if (Build.VERSION.SDK_INT >= 19) {
+////                        //4.4及以上系统使用这个方法处理图片
+////                        handleImageOnKitKat(data);
+////                    } else {
+////                        //4.4以下系统使用这个方法处理图片
+////                        handleImageBeforeKitKat(data);
+////                    }
+//                    //4.4以下系统使用这个方法处理图片
+//                    handleImageOnKitKat(data);
+//                }
+//            default:
+//                break;
+//        }
+//    }
+//
+//    //
+//    private void handleImageBeforeKitKat(Intent data) {
+//        Uri uri = data.getData();
+//        String imagePath = getImagePath(uri, null);
+//        displayImage(imagePath);
+//    }
+//
+//    //根据图片路径显示图片
+//    private void displayImage(String imagePath) {
+//
+//        if (imagePath != null) {
+//            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+//            picture.setImageBitmap(bitmap);
+//        } else {
+//            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    //4.4以上系统
+//    private void handleImageOnKitKat(Intent data) {
+//        String imagePath = null;
+//        Uri uri = data.getData();
+//        if (DocumentsContract.isDocumentUri(this, uri)) {
+//            //如果Document类型的uri，则使用documentid处理'
+//            String docId = DocumentsContract.getDocumentId(uri);
+//            if ("com.android.providers.media.document".equals(uri.getAuthority())) {
+//                String id = docId.split(":")[1];
+//                String selection = MediaStore.Images.Media._ID + "=" + id;
+//                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+//
+//            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+//                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+//                imagePath = getImagePath(contentUri, null);
+//            }
+//        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+//            //如果是content类型的Uri，则使用普通方式处理
+//            imagePath = getImagePath(uri, null);
+//        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+//            imagePath = getImagePath(null, null);
+//        }
+//        //根据图片路径显示图片
+//        displayImage(imagePath);
+//    }
+//
+//    //获取图片路径
+//    private String getImagePath(Uri uri, String selection) {
+//
+//        String path = null;
+//        //通过uri和selection来获取图片的真实路径
+//        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+//        if (cursor != null) {
+//            if (cursor.moveToFirst()) {
+//                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//
+//            }
+//            cursor.close();
+//        }
+//
+//        return path;
+//
+//    }
+//
+//
+//    //选择照片
+//    private void openAlbum() {
+//        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+//        intent.setType("image/*");
+//        startActivityForResult(intent, CHOOSE_PHOTO);
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//
+//        switch (requestCode) {
+//            case 1:
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    openAlbum();
+//                } else {
+//                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    //根据图片路径显示图片
-    private void displayImage(String imagePath){
 
-        if (imagePath != null){
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            picture.setImageBitmap(bitmap);
-        }else {
-            Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
-        }
-    }
-    //4.4以上系统
-    private void handleImageOnKitKat(Intent data) {
-        String imagePath = null;
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            //如果Document类型的uri，则使用documentid处理'
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.document".equals(uri.getAuthority())) {
-                String id = docId.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+    //运行时动态替换fragment
+    private void replaceFragment(Fragment fragment) {
 
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
-                imagePath = getImagePath(contentUri, null);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            //如果是content类型的Uri，则使用普通方式处理
-            imagePath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            imagePath = getImagePath(null,null);
-        }
-         //根据图片路径显示图片
-        displayImage(imagePath);
-    }
+        FragmentManager fragmentManagetr = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManagetr.beginTransaction();
+        transaction.replace(R.id.right_layout, fragment);
+        transaction.commit();
 
-    //获取图片路径
-    private String getImagePath(Uri uri,String selection) {
-
-        String path = null;
-        //通过uri和selection来获取图片的真实路径
-        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
-        if (cursor != null){
-            if (cursor.moveToFirst()){
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-
-            }
-            cursor.close();
-        }
-
-        return path;
-
-    }
-
-
-
-
-    //选择照片
-    private void openAlbum() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");
-        startActivityForResult(intent, CHOOSE_PHOTO);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
-                } else {
-                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
-                }
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_fragment:
+                replaceFragment(new AnotherRightFragment());
                 break;
             default:
                 break;
@@ -563,56 +588,58 @@ public class FirstActivity extends BaseActivity {
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
 
+        Button button = (Button) findViewById(R.id.button_fragment);
+        button.setOnClickListener(this);
+        replaceFragment(new RightFragment());
         //拍照
-        Button takePhoto = (Button) findViewById(R.id.take_photo);
-        picture = (ImageView) findViewById(R.id.picture);
-        //如果开头中没有写 View.OnClickListener，那么就在方法调用处写
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //创建文件对象，存放拍摄照片。并存放在手机sd卡的应用关联缓存目录下
-                //应用关联缓存目录：SD卡中专门用于存放应用缓存数据的位置，具体路径为：/sdcard/Android/data/<package name>/cache
-                File outPutImage = new File(getExternalCacheDir(), "output_image.jpg");
-                try {
-                    if (outPutImage.exists()) {
-                        outPutImage.delete();
-                    }
-                    outPutImage.createNewFile();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (Build.VERSION.SDK_INT >= 24) {
-                    imageUri = FileProvider.getUriForFile(FirstActivity.this, "com.example.sandwind.onedemo.fileprovider", outPutImage);
-                } else {
-                    imageUri = Uri.fromFile(outPutImage);
-                }
-
-                Log.d("imageUri", imageUri.toString());
-
-                //启动相机程序
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TAKE_PHOTO);
-            }
-        });
-        //选择照片
-        Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
-        chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(FirstActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//                } else {
-//                    openAlbum();
+//        Button takePhoto = (Button) findViewById(R.id.take_photo);
+//        picture = (ImageView) findViewById(R.id.picture);
+//        //如果开头中没有写 View.OnClickListener，那么就在方法调用处写
+//        takePhoto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //创建文件对象，存放拍摄照片。并存放在手机sd卡的应用关联缓存目录下
+//                //应用关联缓存目录：SD卡中专门用于存放应用缓存数据的位置，具体路径为：/sdcard/Android/data/<package name>/cache
+//                File outPutImage = new File(getExternalCacheDir(), "output_image.jpg");
+//                try {
+//                    if (outPutImage.exists()) {
+//                        outPutImage.delete();
+//                    }
+//                    outPutImage.createNewFile();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
 //                }
-
-
-                openAlbum();
-            }
-        });
-
+//
+//                if (Build.VERSION.SDK_INT >= 24) {
+//                    imageUri = FileProvider.getUriForFile(FirstActivity.this, "com.example.sandwind.onedemo.fileprovider", outPutImage);
+//                } else {
+//                    imageUri = Uri.fromFile(outPutImage);
+//                }
+//
+//                Log.d("imageUri", imageUri.toString());
+//
+//                //启动相机程序
+//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//                startActivityForResult(intent, TAKE_PHOTO);
+//            }
+//        });
+//        //选择照片
+//        Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
+//        chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+////                    ActivityCompat.requestPermissions(FirstActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+////                } else {
+////                    openAlbum();
+////                }
+//
+//
+//                openAlbum();
+//            }
+//        });
 
 
         //发送通知
