@@ -3,8 +3,11 @@ package com.example.sandwind.onedemo;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,7 +16,11 @@ import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Build;
 import android.preference.DialogPreference;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +65,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.jar.Manifest;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -418,7 +426,10 @@ public class FirstActivity extends BaseActivity {
 //        }
 //    }
 
+    //拍照
     public static final int TAKE_PHOTO = 1;
+    //选择照片
+    public static final int CHOOSE_PHOTO = 2;
     private ImageView picture;
     private Uri imageUri;
 
@@ -427,7 +438,7 @@ public class FirstActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case TAKE_PHOTO:
-                if (resultCode == -1) {
+                if (resultCode == RESULT_OK) {
                     try {
                         //显示拍照照片
                         Log.d("showimage", imageUri.toString());
@@ -437,6 +448,106 @@ public class FirstActivity extends BaseActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+                }
+
+                break;
+            case CHOOSE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    //判断手机系统版本
+//                    if (Build.VERSION.SDK_INT >= 19) {
+//                        //4.4及以上系统使用这个方法处理图片
+//                        handleImageOnKitKat(data);
+//                    } else {
+//                        //4.4以下系统使用这个方法处理图片
+//                        handleImageBeforeKitKat(data);
+//                    }
+                    //4.4以下系统使用这个方法处理图片
+                    handleImageOnKitKat(data);
+                }
+            default:
+                break;
+        }
+    }
+    //
+    private void handleImageBeforeKitKat(Intent data){
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri,null);
+        displayImage(imagePath);
+    }
+
+    //根据图片路径显示图片
+    private void displayImage(String imagePath){
+
+        if (imagePath != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            picture.setImageBitmap(bitmap);
+        }else {
+            Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
+        }
+    }
+    //4.4以上系统
+    private void handleImageOnKitKat(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            //如果Document类型的uri，则使用documentid处理'
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.document".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            //如果是content类型的Uri，则使用普通方式处理
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(null,null);
+        }
+         //根据图片路径显示图片
+        displayImage(imagePath);
+    }
+
+    //获取图片路径
+    private String getImagePath(Uri uri,String selection) {
+
+        String path = null;
+        //通过uri和selection来获取图片的真实路径
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if (cursor != null){
+            if (cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+
+            }
+            cursor.close();
+        }
+
+        return path;
+
+    }
+
+
+
+
+    //选择照片
+    private void openAlbum() {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent, CHOOSE_PHOTO);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openAlbum();
+                } else {
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -452,12 +563,15 @@ public class FirstActivity extends BaseActivity {
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
 
+        //拍照
         Button takePhoto = (Button) findViewById(R.id.take_photo);
         picture = (ImageView) findViewById(R.id.picture);
         //如果开头中没有写 View.OnClickListener，那么就在方法调用处写
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //创建文件对象，存放拍摄照片。并存放在手机sd卡的应用关联缓存目录下
+                //应用关联缓存目录：SD卡中专门用于存放应用缓存数据的位置，具体路径为：/sdcard/Android/data/<package name>/cache
                 File outPutImage = new File(getExternalCacheDir(), "output_image.jpg");
                 try {
                     if (outPutImage.exists()) {
@@ -483,6 +597,24 @@ public class FirstActivity extends BaseActivity {
                 startActivityForResult(intent, TAKE_PHOTO);
             }
         });
+        //选择照片
+        Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
+        chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(FirstActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//                } else {
+//                    openAlbum();
+//                }
+
+
+                openAlbum();
+            }
+        });
+
+
+
         //发送通知
         //Button sendVoice = (Button) findViewById(R.id.send_voice);
         //sendVoice.setOnClickListener(this);
