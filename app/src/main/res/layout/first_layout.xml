@@ -14,12 +14,12 @@
     <!--android:layout_height="match_parent"></ListView>-->
 
 
-    //Fragment
+
 
     <fragment
         android:id="@+id/left_fragment"
         android:name="com.example.sandwind.onedemo.LeftFragment"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
@@ -30,15 +30,15 @@
     <!--android:layout_width="0dp"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_weight="1" />-->
-    <FrameLayout
-        android:id="@+id/right_layout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-    </FrameLayout>
+    <!--<FrameLayout-->
+        <!--android:id="@+id/right_layout"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1">-->
+    <!--</FrameLayout>-->
 
 
-    //拍照显示图片
+    <!--//拍照显示图片-->
     <!--<Button-->
     <!--android:id="@+id/take_photo"-->
     <!--android:layout_width="match_parent"-->
@@ -55,14 +55,14 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:layout_gravity="center_horizontal"/>-->
 
-    //通知栏事件
+    <!--//通知栏事件-->
     <!--<Button-->
     <!--android:id="@+id/send_voice"-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:text="send_voice"/>-->
 
-    //网络请求
+    <!--//网络请求-->
     <!--<Button-->
     <!--android:id="@+id/btn_request"-->
     <!--android:layout_width="match_parent"-->

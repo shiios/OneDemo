@@ -565,15 +565,17 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         FragmentManager fragmentManagetr = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManagetr.beginTransaction();
         transaction.replace(R.id.right_layout, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
 
     }
 
+    //点击一次在栈中添加了一个碎片，返回的时候就需要多返回几次
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_fragment:
-                replaceFragment(new AnotherRightFragment());
+                //replaceFragment(new AnotherRightFragment());
                 break;
             default:
                 break;
@@ -590,7 +592,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 
         Button button = (Button) findViewById(R.id.button_fragment);
         button.setOnClickListener(this);
-        replaceFragment(new RightFragment());
+        //replaceFragment(new RightFragment());
         //拍照
 //        Button takePhoto = (Button) findViewById(R.id.take_photo);
 //        picture = (ImageView) findViewById(R.id.picture);
