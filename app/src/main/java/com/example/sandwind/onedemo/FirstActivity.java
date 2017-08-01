@@ -78,7 +78,7 @@ import until.HttpCallBackListener;
 import until.HttpUntil;
 
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity implements View.OnClickListener {
+public class FirstActivity extends BaseActivity {
 
     //    private EditText editText;
 //    private ImageView imageView;
@@ -560,27 +560,27 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
 
 
     //运行时动态替换fragment
-    private void replaceFragment(Fragment fragment) {
-
-        FragmentManager fragmentManagetr = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManagetr.beginTransaction();
-        transaction.replace(R.id.right_layout, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-    }
-
-    //点击一次在栈中添加了一个碎片，返回的时候就需要多返回几次
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_fragment:
-                //replaceFragment(new AnotherRightFragment());
-                break;
-            default:
-                break;
-        }
-    }
+//    private void replaceFragment(Fragment fragment) {
+//
+//        FragmentManager fragmentManagetr = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManagetr.beginTransaction();
+//        transaction.replace(R.id.right_layout, fragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//
+//    }
+//
+//    //点击一次在栈中添加了一个碎片，返回的时候就需要多返回几次
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.button_fragment:
+//                //replaceFragment(new AnotherRightFragment());
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -590,8 +590,8 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
 
-        Button button = (Button) findViewById(R.id.button_fragment);
-        button.setOnClickListener(this);
+//        Button button = (Button) findViewById(R.id.button_fragment);
+//        button.setOnClickListener(this);
         //replaceFragment(new RightFragment());
         //拍照
 //        Button takePhoto = (Button) findViewById(R.id.take_photo);

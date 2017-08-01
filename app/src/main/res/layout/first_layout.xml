@@ -16,12 +16,13 @@
 
 
 
+
     <fragment
-        android:id="@+id/left_fragment"
-        android:name="com.example.sandwind.onedemo.LeftFragment"
+        android:id="@+id/news_title_fragment"
+        android:name="com.example.sandwind.onedemo.NewsTitleFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+       />
 
 
     <!--<fragment-->
