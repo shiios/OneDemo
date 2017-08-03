@@ -1,5 +1,11 @@
 package com.example.sandwind.onedemo;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -34,6 +40,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +50,8 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -57,12 +66,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -211,7 +224,7 @@ public class FirstActivity extends BaseActivity {
 
 
     //HttpURLConnection
-    TextView responseText;
+//    TextView responseText;
 
 //    @Override
 //    public void onClick(View view) {
@@ -582,13 +595,209 @@ public class FirstActivity extends BaseActivity {
 //        }
 //    }
 
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        String inputText = editText.getText().toString();
+//        editText = (EditText)findViewById(R.id.edit);
+//        save(inputText);
+//    }
+
+//    public void save(String inputText){
+//
+//        FileOutputStream outputStream = null;
+//        BufferedWriter bufferedWriter = null;
+//
+//        try {
+//
+//            outputStream = openFileOutput("data", Context.MODE_PRIVATE);
+//            bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+//            bufferedWriter.write(inputText);
+//
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }finally {
+//
+//            try {
+//                if (bufferedWriter != null){
+//                    bufferedWriter.close();
+//                }
+//            }catch (IOException e){
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//    }
+//
+//    public String load(){
+//
+//        FileInputStream inputStream = null;
+//        BufferedReader reader = null;
+//        StringBuilder stringBuilder = new StringBuilder();
+//        try {
+//
+//            inputStream = openFileInput("data");
+//            reader = new BufferedReader(new InputStreamReader(inputStream));
+//
+//            String line = "";
+//            while ((line = reader.readLine()) != null){
+//                stringBuilder.append(line);
+//            }
+//
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }finally {
+//
+//            if (reader != null){
+//                try {
+//                    reader.close();
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        return stringBuilder.toString();
+//
+//    }
+//    private EditText editText;
+
+//    private SharedPreferences preferences;
+//    private SharedPreferences.Editor editor;
+//
+//    private EditText accountText;
+//    private EditText passwordText;
+//    private CheckBox checkBox;
+//    private Button loginButton;
+
+    private MyDatabaseHelper database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
+        database = new MyDatabaseHelper(this,"BookS.db",null,2);
+
+        Button button = (Button)findViewById(R.id.Create_database);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                database.getWritableDatabase();
+            }
+        });
+
+
+        Button addData = (Button)findViewById(R.id.add_data);
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SQLiteDatabase db = database.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put("name","The dA BAOBO");
+                values.put("author","hanahm");
+                values.put("pages",123423);
+                values.put("price",12.90);
+                db.insert("Book",null,values);
+
+            }
+        });
+
+//        loginButton = (Button) findViewById(R.id.Login);
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//
+//                String account = accountText.getText().toString();
+//                String password = passwordText.getText().toString();
+//
+//                if (account.equals("admin") && password.equals("123456")){
+//                    editor = preferences.edit();
+//                    //复选框被选中
+//                    if(checkBox.isChecked()){
+//                        //存储密码
+//                        editor.putString("account",account);
+//                        editor.putString("password",password);
+//                        editor.putBoolean("remember_password",true);
+//
+//                    }else {//复选框没有被选中
+//                        editor.clear();
+//                    }
+//                    //提交存储
+//                    editor.apply();
+//
+//                    Intent intent = new Intent(FirstActivity.this,FiveActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }else {
+//                    Toast.makeText(FirstActivity.this,"account or password is invalid",Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//            }
+//        });
+//
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        boolean isRember = preferences.getBoolean("remember_password",false);
+//
+//        accountText = (EditText) findViewById(R.id.Account);
+//        passwordText = (EditText) findViewById(R.id.Password);
+//        checkBox = (CheckBox) findViewById(R.id.rember_pass);
+//
+//        if (isRember){
+//            String accunt = preferences.getString("account","");
+//            String password = preferences.getString("password","");
+//            accountText.setText(accunt);
+//            passwordText.setText(password);
+//            checkBox.setChecked(true);
+//        }
+
+
+
+//        Button button = (Button)findViewById(R.id.SaveButton);
+//        button.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+//                editor.putString("name","tom");
+//                editor.putInt("age",29);
+//                editor.putBoolean("married",false);
+//                editor.apply();
+//                Toast.makeText(FirstActivity.this,"Store Succeed",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        Button button1 = (Button)findViewById(R.id.RestoreButton);
+//        button1.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
+//                String name = preferences.getString("name","");
+//                int age = preferences.getInt("age",0);
+//                Boolean married = preferences.getBoolean("married",false);
+//
+//                Log.d("FirstActivity","name is " + name);
+//                Log.d("FirstActivity","age is " + age);
+//                Log.d("FirstActivity","married is " + married);
+//            }
+//        });
+
+
+//        editText = (EditText)findViewById(R.id.edit);
+//
+//        String inputText = load();
+//        if (!TextUtils.isEmpty(inputText)){
+//            editText.setText(inputText);
+//            editText.setSelection(inputText.length());
+//            Toast.makeText(FirstActivity.this,"Restoring succeeded",Toast.LENGTH_SHORT).show();
+//
+//        }
 
 //        Button button = (Button) findViewById(R.id.button_fragment);
 //        button.setOnClickListener(this);

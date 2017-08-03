@@ -75,6 +75,7 @@ public class NewsTitleFragment extends Fragment {
 
         private List<News> mNewsList;
 
+        //        ViewHolder：缓存控件实例
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView newsTitleText;
 
@@ -92,6 +93,7 @@ public class NewsTitleFragment extends Fragment {
 
             mNewsList = newsList;
         }
+
 
 
         @Override
