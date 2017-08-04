@@ -680,10 +680,10 @@ public class FirstActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
-        database = new MyDatabaseHelper(this,"BookS.db",null,2);
+        database = new MyDatabaseHelper(this, "BookS.db", null, 2);
 
-        Button button = (Button)findViewById(R.id.Create_database);
-        button.setOnClickListener(new View.OnClickListener(){
+        Button button = (Button) findViewById(R.id.Create_database);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 database.getWritableDatabase();
@@ -691,7 +691,7 @@ public class FirstActivity extends BaseActivity {
         });
 
 
-        Button addData = (Button)findViewById(R.id.add_data);
+        Button addData = (Button) findViewById(R.id.add_data);
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -699,15 +699,58 @@ public class FirstActivity extends BaseActivity {
                 SQLiteDatabase db = database.getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-                values.put("name","The dA BAOBO");
-                values.put("author","hanahm");
-                values.put("pages",123423);
-                values.put("price",12.90);
-                db.insert("Book",null,values);
+                values.put("name", "The dA BAOBO");
+                values.put("author", "hanahm");
+                values.put("pages", 123423);
+                values.put("price", 12.90);
+                db.insert("Book", null, values);
 
             }
         });
 
+        Button updateButton = (Button) findViewById(R.id.update_data);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = database.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put("price", 10.99);
+                db.update("Book", values, "name = ?", new String[]{"The dA BAOBO"});
+            }
+        });
+
+        Button deleteButton = (Button) findViewById(R.id.delete_data);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = database.getWritableDatabase();
+                db.delete("Book", "pages > ?", new String[]{"500"});
+            }
+        });
+
+        Button queryButton = (Button) findViewById(R.id.query_data);
+        queryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = database.getWritableDatabase();
+                //查询表中所有的数据
+                Cursor cursor = db.query("Book", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        //遍历cursor对象，取出数据并打印
+                        String name = cursor.getString(cursor.getColumnIndex("name"));
+                        String cuthor = cursor.getString(cursor.getColumnIndex("author"));
+                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+                        Log.d("FirstActivity", "book name is " + name);
+                        Log.d("FirstActivity", "book author is " + cuthor);
+                        Log.d("FirstActivity", "book pages is " + pages);
+                        Log.d("FirstActivity", "book price is " + price);
+                    }while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        });
 //        loginButton = (Button) findViewById(R.id.Login);
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //
@@ -757,7 +800,6 @@ public class FirstActivity extends BaseActivity {
 //            passwordText.setText(password);
 //            checkBox.setChecked(true);
 //        }
-
 
 
 //        Button button = (Button)findViewById(R.id.SaveButton);
