@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<litepal>
+    <!--数据库名称-->
+    <dbname value="BookStore"></dbname>
+    <!--数据库版本号-->
+    <version value="1"></version>
+    <!--用于指定所有的映射模型-->
+    <list>
+        <mapping class="com.example.sandwind.onedemo.Book"></mapping>
+        <mapping class="com.example.sandwind.onedemo.Category"></mapping>
+    </list>
+
+</litepal>

@@ -15,34 +15,112 @@
 
 
     <Button
-        android:id="@+id/Create_database"
+        android:id="@+id/start_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create database" />
+        android:text="staer download" />
 
     <Button
-        android:id="@+id/add_data"
+        android:id="@+id/paused_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add data" />
-
+        android:text="paused download" />
     <Button
-        android:id="@+id/update_data"
+        android:id="@+id/cancel_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update data" />
+        android:text="cancel download"/>
 
-    <Button
-        android:id="@+id/delete_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete data" />
 
-    <Button
-        android:id="@+id/query_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Query data" />
+    <!--<Button-->
+    <!--android:id="@+id/start_intent_service"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="start intent service"/>-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/uBind_service"-->
+    <!--android:layout_below="@+id/start_intent_service"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="uBind service"/>-->
+    <!--<Button-->
+    <!--android:id="@+id/bind_service"-->
+    <!--android:layout_below="@+id/uBind_service"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="bind service"/>-->
+
+    <!--<Button-->
+    <!--android:id="@+id/start_service"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="start service"/>-->
+    <!--<Button-->
+    <!--android:id="@+id/stop_service"-->
+    <!--android:layout_below="@+id/start_service"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="stop service"/>-->
+
+
+    <!--<ListView-->
+    <!--android:id="@+id/contacts_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></ListView>-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/change_text"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="change text"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textview"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="hello world"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:textSize="20sp"/>-->
+
+    <!--<Button-->
+    <!--android:id="@+id/make_call"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="makecall"/>-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/Create_database"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Create database" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/add_data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="add data" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/update_data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Update data" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/delete_data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Delete data" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/query_data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Query data" />-->
 
     <!--记住密码-->
     <!--<LinearLayout-->

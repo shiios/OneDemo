@@ -1,10 +1,15 @@
 package com.example.sandwind.onedemo;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.IBinder;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.app.Notification;
@@ -64,6 +69,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.litepal.tablemanager.Connector;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -82,6 +88,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.jar.Manifest;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -90,8 +98,10 @@ import okhttp3.Response;
 import until.HttpCallBackListener;
 import until.HttpUntil;
 
+import static android.R.layout.simple_list_item_1;
+
 /*此处添加implements View.OnClickListener*/
-public class FirstActivity extends BaseActivity {
+public class FirstActivity extends BaseActivity implements View.OnClickListener {
 
     //    private EditText editText;
 //    private ImageView imageView;
@@ -672,85 +682,317 @@ public class FirstActivity extends BaseActivity {
 //    private CheckBox checkBox;
 //    private Button loginButton;
 
-    private MyDatabaseHelper database;
+//    private MyDatabaseHelper database;
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//
+//        switch (requestCode){
+//            case 1:
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                    call();
+//                }else {
+//                    Toast.makeText(FirstActivity.this,"deny",Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            default:
+//        }
+//    }
+//
+//    private  void call(){
+//        try {
+//
+//            Intent intent = new Intent(Intent.ACTION_CALL);
+//            intent.setData(Uri.parse("tel:100000"));
+//            startActivity(intent);
+//        }catch (SecurityException e){
+//            e.printStackTrace();
+//        }
+//    }
+
+//    public static final int UPDATE_TEXT = 1;
+//
+//    private TextView textView;
+//
+//
+//    android.os.Handler handler = new android.os.Handler(){
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//
+//            switch (msg.what){
+//                case UPDATE_TEXT:
+//                    textView.setText("Nice to meet you !");
+//                    break;
+//                default:
+//                    break;
+//            }
+//
+//        }
+//    };
+
+//    private Handler handler = new Handler() {
+//
+//        public void handleMessage(Message msg){
+//            switch (msg.what){
+//                case UPDATE_TEXT:
+//                    textView.setText("Nice to meet you !");
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
+
+
+//    private MyService.DowmloadBinder dowmloadBinder;
+//
+//    private ServiceConnection connection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+//
+//            dowmloadBinder = (MyService.DowmloadBinder) iBinder;
+//            dowmloadBinder.startDownload();
+//            dowmloadBinder.getProgress();
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//
+//        }
+//    };
+
+
+    private DownlaodService.DownloadBinder downloadBinder;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            downloadBinder = (DownlaodService.DownloadBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
         Log.d("FirstActivity", "Task id is" + getTaskId());
         setContentView(R.layout.first_layout);
-        database = new MyDatabaseHelper(this, "BookS.db", null, 2);
 
-        Button button = (Button) findViewById(R.id.Create_database);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                database.getWritableDatabase();
-            }
-        });
+        Button startDownload = (Button) findViewById(R.id.start_download);
+        Button pausedDownload = (Button) findViewById(R.id.paused_download);
+        Button cancelDownload = (Button) findViewById(R.id.cancel_download);
+        startDownload.setOnClickListener(this);
+        pausedDownload.setOnClickListener(this);
+        cancelDownload.setOnClickListener(this);
+
+        Intent intent = new Intent(this,DownlaodService.class);
+        startService(intent);
+        bindService(intent,connection,BIND_AUTO_CREATE);
+        if (ContextCompat.checkSelfPermission(FirstActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstActivity.this,new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
+//        Button uBindBtn = (Button) findViewById(R.id.uBind_service);
+//        Button bindpBtn = (Button) findViewById(R.id.bind_service);
+//        uBindBtn.setOnClickListener(this);
+//        bindpBtn.setOnClickListener(this);
 
 
-        Button addData = (Button) findViewById(R.id.add_data);
-        addData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        Button startIntentService = (Button) findViewById(R.id.start_intent_service);
+//        startIntentService.setOnClickListener(this);
 
-                SQLiteDatabase db = database.getWritableDatabase();
-                ContentValues values = new ContentValues();
+    }
 
-                values.put("name", "The dA BAOBO");
-                values.put("author", "hanahm");
-                values.put("pages", 123423);
-                values.put("price", 12.90);
-                db.insert("Book", null, values);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.start_download:
+                String utl = "http://tkdapp.chinatelling.com/tykd_pt/uploads/TYKD.ipa";
+                downloadBinder.startDownload(utl);
+                break;
+            case R.id.paused_download:
+                downloadBinder.pausedDownload();
+                break;
+            case R.id.cancel_download:
+                downloadBinder.cancelDownload();
+                break;
+            default:
+                break;
+        }
+    }
 
-            }
-        });
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        Button updateButton = (Button) findViewById(R.id.update_data);
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SQLiteDatabase db = database.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put("price", 10.99);
-                db.update("Book", values, "name = ?", new String[]{"The dA BAOBO"});
-            }
-        });
-
-        Button deleteButton = (Button) findViewById(R.id.delete_data);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SQLiteDatabase db = database.getWritableDatabase();
-                db.delete("Book", "pages > ?", new String[]{"500"});
-            }
-        });
-
-        Button queryButton = (Button) findViewById(R.id.query_data);
-        queryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SQLiteDatabase db = database.getWritableDatabase();
-                //查询表中所有的数据
-                Cursor cursor = db.query("Book", null, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    do {
-                        //遍历cursor对象，取出数据并打印
-                        String name = cursor.getString(cursor.getColumnIndex("name"));
-                        String cuthor = cursor.getString(cursor.getColumnIndex("author"));
-                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
-                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
-                        Log.d("FirstActivity", "book name is " + name);
-                        Log.d("FirstActivity", "book author is " + cuthor);
-                        Log.d("FirstActivity", "book pages is " + pages);
-                        Log.d("FirstActivity", "book price is " + price);
-                    }while (cursor.moveToNext());
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(FirstActivity.this,"拒绝权限将无法使用程序",Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-                cursor.close();
-            }
-        });
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
+
+    //    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.start_intent_service:
+//                Log.d("FirstActivity","Thread id is " + Thread.currentThread().getId());
+//            Intent intent = new Intent(FirstActivity.this,MyIntentService.class);
+//                startService(intent);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+
+    //    @Override
+//    public void onClick(View view) {
+//
+//        switch (view.getId()){
+//            case R.id.bind_service:
+//                Intent unbindIntent = new Intent(FirstActivity.this,MyService.class);
+//                bindService(unbindIntent,connection,BIND_AUTO_CREATE);//绑定服务
+//                break;
+//            case R.id.uBind_service:
+//                Intent bindIntent = new Intent(FirstActivity.this,MyService.class);
+//                unbindService(connection);//解绑服务
+//        }
+//    }
+
+    //        Button changeButton = (Button) findViewById(R.id.change_text);
+//        textView = (TextView)findViewById(R.id.textview);
+//        changeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                switch (view.getId()){
+//                    case R.id.change_text:
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                //子线程更新UI，会崩溃 报错：Only the original thread that created a view hierarchy can touch its views.
+//                                Message message = new Message();
+//                                message.what = UPDATE_TEXT;
+//                                handler.sendMessage(message);
+//                            }
+//                        }).start();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
+
+
+//        Button button = (Button) findViewById(R.id.make_call);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//               if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+//                   ActivityCompat.requestPermissions(FirstActivity.this,new String[] {Manifest.permission.CALL_PHONE},1);
+//               }else {
+//                   call();
+//               }
+//
+//            }
+//        });
+
+
+//database = new MyDatabaseHelper(this, "BookS.db", null, 2);
+
+//        Button button = (Button) findViewById(R.id.Create_database);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//               // database.getWritableDatabase();
+//                Connector.getDatabase();
+//
+//            }
+//        });
+//
+//
+//        Button addData = (Button) findViewById(R.id.add_data);
+//        addData.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Book book = new Book();
+//                book.setName("xiaoya");
+//                book.setAuthor("zhangsan");
+//                book.setPages(1334);
+//                book.setPrice(78.90);
+//                book.setPress("unkone");
+//                book.save();
+//                SQLiteDatabase db = database.getWritableDatabase();
+//                ContentValues values = new ContentValues();
+//
+//                values.put("name", "The dA BAOBO");
+//                values.put("author", "hanahm");
+//                values.put("pages", 123423);
+//                values.put("price", 12.90);
+//                db.insert("Book", null, values);
+//
+//            }
+//        });
+//
+//        Button updateButton = (Button) findViewById(R.id.update_data);
+//        updateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SQLiteDatabase db = database.getWritableDatabase();
+//                ContentValues values = new ContentValues();
+//                values.put("price", 10.99);
+//                db.update("Book", values, "name = ?", new String[]{"The dA BAOBO"});
+//            }
+//        });
+//
+//        Button deleteButton = (Button) findViewById(R.id.delete_data);
+//        deleteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SQLiteDatabase db = database.getWritableDatabase();
+//                db.delete("Book", "pages > ?", new String[]{"500"});
+//            }
+//        });
+//
+//        Button queryButton = (Button) findViewById(R.id.query_data);
+//        queryButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SQLiteDatabase db = database.getWritableDatabase();
+//                //查询表中所有的数据
+//                Cursor cursor = db.query("Book", null, null, null, null, null, null);
+//                if (cursor.moveToFirst()) {
+//                    do {
+//                        //遍历cursor对象，取出数据并打印
+//                        String name = cursor.getString(cursor.getColumnIndex("name"));
+//                        String cuthor = cursor.getString(cursor.getColumnIndex("author"));
+//                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+//                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+//                        Log.d("FirstActivity", "book name is " + name);
+//                        Log.d("FirstActivity", "book author is " + cuthor);
+//                        Log.d("FirstActivity", "book pages is " + pages);
+//                        Log.d("FirstActivity", "book price is " + price);
+//                    }while (cursor.moveToNext());
+//                }
+//                cursor.close();
+//            }
+//        });
 //        loginButton = (Button) findViewById(R.id.Login);
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //
@@ -843,8 +1085,8 @@ public class FirstActivity extends BaseActivity {
 
 //        Button button = (Button) findViewById(R.id.button_fragment);
 //        button.setOnClickListener(this);
-        //replaceFragment(new RightFragment());
-        //拍照
+//replaceFragment(new RightFragment());
+//拍照
 //        Button takePhoto = (Button) findViewById(R.id.take_photo);
 //        picture = (ImageView) findViewById(R.id.picture);
 //        //如果开头中没有写 View.OnClickListener，那么就在方法调用处写
@@ -895,25 +1137,25 @@ public class FirstActivity extends BaseActivity {
 //        });
 
 
-        //发送通知
-        //Button sendVoice = (Button) findViewById(R.id.send_voice);
-        //sendVoice.setOnClickListener(this);
+//发送通知
+//Button sendVoice = (Button) findViewById(R.id.send_voice);
+//sendVoice.setOnClickListener(this);
 
 
-        //HttpURLConnection
+//HttpURLConnection
 //        Button sendRes = (Button) findViewById(R.id.btn_request);
 //        responseText = (TextView) findViewById(R.id.Response_Data);
 //        sendRes.setOnClickListener(this);
 
 
-        //webview加载网页
+//webview加载网页
 //        WebView webView = (WebView)findViewById(R.id.webView);
 //        webView.getSettings().setJavaScriptEnabled(true);
 //        webView.setWebViewClient(new WebViewClient());
 //        webView.loadUrl("http://baidu.com");
 
 
-        //聊天
+//聊天
 //        initMsgs();
 //
 //        inputText = (EditText)findViewById(R.id.input_text);
@@ -946,9 +1188,9 @@ public class FirstActivity extends BaseActivity {
 //            actionBar.hide();
 //        }
 
-        // initFruits();
+// initFruits();
 
-        //RecyclerView:LayoutManager
+//RecyclerView:LayoutManager
 //        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 //        //StaggeredGridLayoutManager(int spanCount, int orientation):spanCount:列数   orientation:排列方向
 //        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
@@ -958,7 +1200,7 @@ public class FirstActivity extends BaseActivity {
 //        recyclerView.setAdapter(recyclerViewAdapter);
 
 
-        //RecyclerView:LayoutManager
+//RecyclerView:LayoutManager
 //        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 //        //设置此处来决定数据的展示方向
@@ -968,7 +1210,7 @@ public class FirstActivity extends BaseActivity {
 //        recyclerView.setAdapter(recyclerViewAdapter);
 
 
-        //ListView
+//ListView
 //        FruitAdapter fruitAdapter = new FruitAdapter(FirstActivity.this, R.layout.fruit_item, fruitList);
 //        ListView listView = (ListView) findViewById(R.id.list_view);
 //        listView.setAdapter(fruitAdapter);
@@ -1033,7 +1275,7 @@ public class FirstActivity extends BaseActivity {
 ////                intent.putExtra("extra_data",data);
 //                startActivity(intent);
 
-        //FourActivity.actionStart(FirstActivity.this,"123","456");
+//FourActivity.actionStart(FirstActivity.this,"123","456");
 
 //            }
 //
@@ -1049,7 +1291,7 @@ public class FirstActivity extends BaseActivity {
 //            }
 //        });
 
-    }
+//    }
 //
 //    @Override
 //    public void onClick(View v) {
@@ -1150,5 +1392,5 @@ public class FirstActivity extends BaseActivity {
 //        super.onRestart();
 //        Log.d(TAG, "onRestart");
 //    }
-}
 
+}

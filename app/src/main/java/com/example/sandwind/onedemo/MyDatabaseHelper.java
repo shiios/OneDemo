@@ -25,11 +25,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     +" category_code integer,"
     +" category_height integer)";
 
-
-    public static final String CREATE_CATEGORY2 = "create table Category("
-            +" id integer primary key autoincrement,"
-            +" category_name text,"
-            +" category_code integer)";
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -43,7 +38,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(CREATE_BOOK);
         sqLiteDatabase.execSQL(CREATE_CATEGORY);
-//        sqLiteDatabase.execSQL(CREATE_CATEGORY2);
         Toast.makeText(mContext,"Create succeed",Toast.LENGTH_SHORT).show();
 
     }
